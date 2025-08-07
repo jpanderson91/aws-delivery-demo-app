@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS ProServe Customer Portal</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #232f3e;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .aws-logo {
+            color: #ff9900;
+            font-weight: bold;
+            font-size: 24px;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #ff9900;
+        }
+        
+        .btn {
+            background: #ff9900;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #e68900;
+        }
+        
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .metric-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 4px solid #ff9900;
+        }
+        
+        .metric-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #232f3e;
+        }
+        
+        .metric-label {
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="aws-logo">AWS</div>
+            <h1>ProServe Customer Portal</h1>
+            <p>Demonstration of Modern Web Development on AWS</p>
+        </div>
+        
+        <div class="content">
+            <h2>Customer Registration</h2>
+            <p>This demo showcases JavaScript + Python integration for AWS Delivery Consultant requirements</p>
+            
+            <form id="customerForm">
+                <div class="form-group">
+                    <label for="name">Customer Name *</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="company">Company *</label>
+                    <input type="text" id="company" name="company" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="industry">Industry</label>
+                    <select id="industry" name="industry">
+                        <option value="">Select Industry</option>
+                        <option value="technology">Technology</option>
+                        <option value="finance">Finance</option>
+                        <option value="healthcare">Healthcare</option>
+                        <option value="retail">Retail</option>
+                        <option value="manufacturing">Manufacturing</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="notes">Project Requirements</label>
+                    <textarea id="notes" name="notes" rows="4" placeholder="Describe your AWS migration or modernization needs..."></textarea>
+                </div>
+                
+                <button type="submit" class="btn">Create Customer</button>
+            </form>
+            
+            <div id="status" class="status"></div>
+            
+            <div class="metrics">
+                <div class="metric-card">
+                    <div class="metric-value" id="customerCount">0</div>
+                    <div class="metric-label">Total Customers</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">~$10</div>
+                    <div class="metric-label">Monthly Cost</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">99.9%</div>
+                    <div class="metric-label">Uptime</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * AWS ProServe Customer Portal JavaScript
+         * Demonstrates modern ES6+ JavaScript for AWS Delivery Consultant role
+         * Author: John Anderson
+         */
+
+        class CustomerPortal {
+            constructor() {
+                this.apiEndpoint = 'https://api.your-domain.com/customers'; // Will be replaced with actual API Gateway URL
+                this.customerCount = 0;
+                
+                this.initializeEventListeners();
+                this.loadMetrics();
+            }
+
+            initializeEventListeners() {
+                const form = document.getElementById('customerForm');
+                form.addEventListener('submit', (e) => this.handleFormSubmit(e));
+            }
+
+            async handleFormSubmit(event) {
+                event.preventDefault();
+                
+                const formData = new FormData(event.target);
+                const customerData = Object.fromEntries(formData.entries());
+                
+                // Show loading state
+                const submitBtn = event.target.querySelector('button[type="submit"]');
+                const originalText = submitBtn.textContent;
+                submitBtn.textContent = 'Creating...';
+                submitBtn.disabled = true;
+
+                try {
+                    await this.createCustomer(customerData);
+                    this.showStatus('Customer created successfully!', 'success');
+                    event.target.reset();
+                    this.updateCustomerCount();
+                } catch (error) {
+                    this.showStatus(`Error: ${error.message}`, 'error');
+                    console.error('Customer creation failed:', error);
+                } finally {
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                }
+            }
+
+            async createCustomer(customerData) {
+                // For demo purposes, simulate API call
+                // In real implementation, this would call the Lambda function via API Gateway
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        if (Math.random() > 0.1) { // 90% success rate for demo
+                            resolve({ customer_id: `cust_${Date.now()}` });
+                        } else {
+                            reject(new Error('Simulated network error'));
+                        }
+                    }, 1000);
+                });
+
+                // Real implementation would look like:
+                /*
+                const response = await fetch(this.apiEndpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${await this.getAuthToken()}`
+                    },
+                    body: JSON.stringify(customerData)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                return await response.json();
+                */
+            }
+
+            showStatus(message, type) {
+                const statusDiv = document.getElementById('status');
+                statusDiv.textContent = message;
+                statusDiv.className = `status ${type}`;
+                statusDiv.style.display = 'block';
+
+                // Auto-hide after 5 seconds
+                setTimeout(() => {
+                    statusDiv.style.display = 'none';
+                }, 5000);
+            }
+
+            updateCustomerCount() {
+                this.customerCount++;
+                document.getElementById('customerCount').textContent = this.customerCount;
+            }
+
+            async loadMetrics() {
+                // Simulate loading metrics from CloudWatch or DynamoDB
+                // In real implementation, this would fetch actual metrics
+                try {
+                    const metrics = await this.fetchMetrics();
+                    this.displayMetrics(metrics);
+                } catch (error) {
+                    console.error('Failed to load metrics:', error);
+                }
+            }
+
+            async fetchMetrics() {
+                // Simulated metrics for demo
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        resolve({
+                            customerCount: Math.floor(Math.random() * 100) + 50,
+                            uptime: '99.9%',
+                            cost: '$10'
+                        });
+                    }, 500);
+                });
+            }
+
+            displayMetrics(metrics) {
+                document.getElementById('customerCount').textContent = metrics.customerCount;
+                this.customerCount = metrics.customerCount;
+            }
+        }
+
+        // Initialize the application when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            window.customerPortal = new CustomerPortal();
+        });
+
+        // AWS SDK integration example (would be loaded from CDN in real app)
+        // This demonstrates familiarity with AWS SDK for JavaScript
+        /*
+        import { CognitoIdentityProviderClient, InitiateAuthCommand } from "@aws-sdk/client-cognito-identity-provider";
+
+        class AWSIntegration {
+            constructor() {
+                this.cognitoClient = new CognitoIdentityProviderClient({
+                    region: 'us-east-1'
+                });
+            }
+
+            async authenticateUser(username, password) {
+                const command = new InitiateAuthCommand({
+                    AuthFlow: 'USER_PASSWORD_AUTH',
+                    ClientId: 'your-cognito-client-id',
+                    AuthParameters: {
+                        USERNAME: username,
+                        PASSWORD: password
+                    }
+                });
+
+                return await this.cognitoClient.send(command);
+            }
+        }
+        */
+    </script>
+</body>
+</html>
