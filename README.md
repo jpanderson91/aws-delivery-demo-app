@@ -31,6 +31,32 @@ Below are validation screenshots from a live deployment of the basic serverless 
 5) Lambda logs (last 10 minutes)
 ![Lambda Logs](docs/screenshots/lambda-logs.png)
 
+## Console verification
+
+Spot-checks from the AWS Console for the same deployment:
+
+1) API Gateway
+- Overview: ![API Gateway](docs/screenshots/api-gateway.png)
+- Resources: ![API Resources](docs/screenshots/api-gateway-resources.png)
+- Stages: ![API Stages](docs/screenshots/api-gateway-stages.png)
+
+2) Lambda Function
+- Function details: ![Lambda Function](docs/screenshots/lambda-function.png)
+- Code tab: ![Lambda Function Console](docs/screenshots/lambda-function-console-screenshot.png)
+
+3) DynamoDB Table
+- Table list/details: ![DynamoDB](docs/screenshots/dynamodb.png)
+- Console view: ![DynamoDB Console](docs/screenshots/dynamodb-console-screenshot.png)
+- Sample scan output: ![DynamoDB Scan](docs/screenshots/dynamodb-scan.png)
+
+4) CloudWatch Logs
+- Log group: ![CloudWatch Logs Group](docs/screenshots/cloudwatch-loggroup-console-screenshot.png)
+- Recent Lambda logs: ![Lambda Logs](docs/screenshots/lambda-logs.png)
+
+5) SSM Parameter Store
+- Parameter list: ![SSM Parameter Store](docs/screenshots/ssm-parameter-store.png)
+- Console view: ![SSM Parameter Store Console](docs/screenshots/ssm-parameter-store-console-screenshot.png)
+
 ## Quick start
 
 Prereqs: AWS CLI v2, Terraform 1.5+, an AWS profile (SSO or static).
