@@ -45,3 +45,9 @@ variable "cost_center" {
   type        = string
   default     = "Technology"
 }
+
+variable "ttl_days" {
+  description = "Number of days before customer items expire (DynamoDB TTL)."
+  type        = number
+  default     = 7
+}

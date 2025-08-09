@@ -81,6 +81,11 @@ resource "aws_dynamodb_table" "customers" {
   }
 
   tags = local.common_tags
+
+  ttl {
+    attribute_name = "expires_at"
+    enabled        = true
+  }
 }
 
 # Store the table name in SSM Parameter for the Lambda to read
@@ -159,6 +164,12 @@ resource "aws_lambda_function" "customer_api" {
   handler       = "customer_api.lambda_handler"
   runtime       = "python3.11"
   role          = aws_iam_role.lambda_exec.arn
+
+  environment {
+    variables = {
+      TTL_DAYS = var.ttl_days
+    }
+  }
 
   tags = local.common_tags
 }

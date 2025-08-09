@@ -1,0 +1,40 @@
+name: smoke-test
+
+on:
+  workflow_dispatch:
+    inputs:
+      api_base:
+        description: "API base URL (e.g., https://xxx.execute-api.us-west-2.amazonaws.com/dev)"
+        required: true
+        type: string
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PowerShell
+        uses: PowerShell/PowerShell@v1
+        with:
+          version: '7.4.x'
+
+      - name: Run smoke test
+        shell: pwsh
+        run: |
+          Set-StrictMode -Version Latest
+          $api = '${{ inputs.api_base }}'
+          if ([string]::IsNullOrWhiteSpace($api)) { throw 'api_base is required' }
+          $script = Join-Path $PWD 'testing/integration/smoke.ps1'
+          if (-not (Test-Path $script)) { throw "Smoke script not found: $script" }
+          # Create a temp wrapper that injects API base via TF output stub
+          $tmp = New-TemporaryFile
+          @'
+          param([string]$Api)
+          $ErrorActionPreference = 'Stop'
+          # shim terraform output
+          function terraform { param([Parameter(ValueFromRemainingArguments)]$args) if ($args -contains 'output' -and $args -contains '-raw' -and $args -contains 'api_invoke_url') { Write-Output $Api } else { throw 'This wrapper only supports terraform output -raw api_invoke_url' } }
+          & "$using:script"
+          '@ | Set-Content -Path $tmp -Encoding UTF8
+          pwsh -File $tmp -Api $api
