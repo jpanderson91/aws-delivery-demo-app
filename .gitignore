@@ -6,6 +6,8 @@
 *.tfplan
 .terraformrc
 terraform.rc
+terraform/build/
+*.zip
 
 # AWS
 .aws/
@@ -27,6 +29,7 @@ pip-delete-this-directory.txt
 
 # IDE
 .vscode/settings.json
+.vs/
 .idea/
 *.swp
 *.swo
@@ -46,3 +49,4 @@ secrets/
 *.backup
 archive/temp/
 testing/output/
+node_modules/
