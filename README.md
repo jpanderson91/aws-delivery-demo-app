@@ -12,6 +12,25 @@ flowchart LR
     C -- GetParameter --> E[SSM Parameter: /demo-app/dynamodb/table-name]
 ```
 
+## Validation screenshots
+
+Below are validation screenshots from a live deployment of the basic serverless stack.
+
+1) Terraform outputs
+![Terraform Outputs](docs/screenshots/terraform-outputs.png)
+
+2) API GET /
+![GET Root](docs/screenshots/api-get-root.png)
+
+3) API POST /customers
+![POST Customer](docs/screenshots/api-post-customer.png)
+
+4) DynamoDB scan
+![DynamoDB Scan](docs/screenshots/dynamodb-scan.png)
+
+5) Lambda logs (last 10 minutes)
+![Lambda Logs](docs/screenshots/lambda-logs.png)
+
 ## Quick start
 
 Prereqs: AWS CLI v2, Terraform 1.5+, an AWS profile (SSO or static).
