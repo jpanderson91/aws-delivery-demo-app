@@ -54,10 +54,24 @@ This repository showcases **senior-level AWS capabilities** through:
 
 ## 📸 **Live Dashboard Screenshots**
 
-![Main Dashboard](docs/screenshots/main-dashboard.png)
-*Main Dashboard - Shows {{DASHBOARD_DESCRIPTION}}*
+Below are validation screenshots from a live deployment of the basic serverless stack.
 
-> 🎯 **Portfolio Demonstration**: These screenshots show a live, working AWS web-application processing real data with zero errors and fast performance.
+1) Terraform outputs
+![Terraform Outputs](docs/screenshots/terraform-outputs.png)
+
+2) API GET /
+![GET Root](docs/screenshots/api-get-root.png)
+
+3) API POST /customers
+![POST Customer](docs/screenshots/api-post-customer.png)
+
+4) DynamoDB scan
+![DynamoDB Scan](docs/screenshots/dynamodb-scan.png)
+
+5) Lambda logs (last 10 minutes)
+![Lambda Logs](docs/screenshots/lambda-logs.png)
+
+> 🎯 These screenshots prove end-to-end functionality: API Gateway → Lambda → DynamoDB with successful writes and logs.
 
 > *Designed for development teams and product managers requirements - demonstrating expertise in AWS services, serverless architecture, and cost optimization strategies.*
 
