@@ -99,15 +99,35 @@ pwsh -File .\testing\integration\smoke.ps1
 ## Repository layout
 
 ```
-src/
-    frontend/index.html
-    lambda/customer_api.py
-terraform/
-    main.tf
-    variables.tf
-    outputs.tf
+.git/
+.github/
+.gitignore
+archive/
+    README.local.backup-20250809-122905.md
 docs/
+    ARCHITECTURE.md
     PROJECT_STATUS.md
+    screenshots/
+scripts/
+    deployment/
+src/
+    api gateway/
+    frontend/
+    lambda/
+terraform/
+    .terraform/
+    .terraform.lock.hcl
+    build/
+    main.tf
+    outputs.tf
+    terraform.tfstate
+    terraform.tfstate.backup
+    variables.tf
+testing/
+    integration/
+QUICK_START.md
+README.md
+terraform.tfstate
 ```
 
 ## Notes
